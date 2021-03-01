@@ -13,7 +13,7 @@ function App() {
          <Route path="/register" component={Register}/>
          <Route path="/login" component={Login}/>
          <Route path="/user" component={Users}/>
-         <Route path="/tasksInsert" component={TaskInsert}/>
+         <Route path="/taskInsert" component={TaskInsert}/>
          <Route path="/taskList" component={TaskList}/>
          <Route path="/get/tasks/Any" component={TaskInsert}/>
     </div>
