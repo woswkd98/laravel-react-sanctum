@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Hash;
 class LoginController extends Controller
 {
     public function Login(Request $request) {
-
+        
         try{
             $request->validate([
                 'email' => 'required|email',
@@ -24,29 +24,43 @@ class LoginController extends Controller
 
             if(!Auth::attempt($credentials))
             {
-                return response()->json(['msg' => 'unauthorized'], 200);
+                return response()->json([
+                    'msg' => 'unauthorized'
+                ], 200);
             }
-
+            
             $user = User::where('email', $request->email)->first();
-
+            
             if(!Hash::check($request->password, $user->password,  ['round' => env('PASSWORD_HASH_ROUND')]))
             {
-                return response()->json(['password not match'], 200);
+                return response()->json([
+                    'password not match'
+                ], 200);
             }
-            return response()->json(['msg' => 'success']);
+
+            return response()->json([
+                    'msg' => 'success'
+            ],200);
+      
 
         } catch (Exception $e) {
             return response()->json([
                     'msg' => 'Error in login',
                     'error' => $e
                 ], 200);
+            
         }
+       
     }
 
     public function logout(Request $request) {
-        // 스파인증에서 로그아웃에 대한 문서가 없으므로 그냥 쿠키를 다 날려버리는 선택을 했다
-        Auth::logout();
-
+        
+        // Auth::logout()이 안되므로 쿠키 자체를 날려버렸다
+        //Auth::logout();
+        $cookie = Cookie::forget('laravel_session');
+        Cookie::queue($cookie);
+        //$cookie = Cookie::forget('XSRF-TOKEN');
+        //Cookie::queue($cookie);
         return response()
         ->json([
             'msg' => 'success'

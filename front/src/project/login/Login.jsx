@@ -13,6 +13,8 @@ const Login = (props) => {
         e.preventDefault();
         apiClient.get('/sanctum/csrf-cookie')
             .then(res => {
+                console.log(res);
+                
                 apiClient.post('/api/login', {
                     email : email,
                     password : password,

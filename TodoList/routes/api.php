@@ -30,3 +30,4 @@ Route::middleware('auth:sanctum')->group(function() {
 
 Route::post("login", 'App\Http\Controllers\LoginController@login');
 Route::post("register", 'App\Http\Controllers\UserController@store');
+//Route::post('logout', 'App\Http\Controllers\UserController@logout');
