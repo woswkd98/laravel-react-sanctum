@@ -76,12 +76,12 @@ class TaskController extends Controller
 
             return response()->json([
                 'msg' => 'success'
-            ]);
+            ], 200);
 
-        } catch(Exception $error) {
+        } catch(Exception $e) {
             return response()->json([
-                'error' => $error->getMessage()
-            ]);
+                'error' => $e->getMessage()
+            ],  $e->getCode());
         }
         //$this->taskRepository->create($request->toArray());
         return response()->json([
@@ -120,7 +120,7 @@ class TaskController extends Controller
      */
     public function update(Request $request, $id)
     {
-        /*
+        
         $rs = $request->validate([
             'title' => 'required',
             'context' => 'required'
@@ -132,7 +132,7 @@ class TaskController extends Controller
             'user_id' => Auth::user()->id
         ];
 
-        return $this->taskRepository->update($id, $datas);*/
+        return $this->taskRepository->update($id, $datas);
 
 
     }
@@ -153,7 +153,7 @@ class TaskController extends Controller
         } catch (Exception $e) {
             return response()->json([
                 'error' => $e->getMessage()
-            ], 200);
+            ], $e->getCode());
         }
 
     }

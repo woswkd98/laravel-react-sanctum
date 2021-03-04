@@ -3,7 +3,10 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-
+use App\Models\Task;
+use App\Models\User;
+use App\Observers\TaskObserver;
+use App\Observers\UserObserver;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -23,6 +26,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        // 모델들 옵저버 등록
+        Task::observe(TaskObserver::class);
+        User::observe(UserObserver::class);
     }
 }

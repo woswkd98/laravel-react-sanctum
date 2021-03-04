@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use App\Repositories\UserRepository;
+use Illuminate\Support\Facades\Log;
+
 class UserController extends Controller
 {
     protected UserRepository $userRepository;
@@ -53,6 +55,8 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        
+
         try {
             $validator = Validator::make($request->all(), [
                 'name' => 'required|string|max:255',
@@ -81,11 +85,11 @@ class UserController extends Controller
                 'msg' => 'success '.$user
             ], 200);
 
-         } catch(Exception $error) {
+         } catch(Exception $e) {
             return response()->json([
                 'msg' => 'Error in Registration',
-                'error' => $error,
-            ], 200);
+                'error' => $e,
+            ], $e->getCode());
         }
 
     }
@@ -98,6 +102,8 @@ class UserController extends Controller
      */
     public function show($id)
     {
+
+
         return response($this->userRepository->findByPK($id), 200);
     }
 
@@ -132,6 +138,13 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $this->userRepository->delete($id);
+        try {
+            return response()
+                ->json($this->userRepository->delete($id), 200);
+        } catch (\Throwable $th) {
+            return response()
+                ->json('delete fali : '.$th->getMessage(),  $th->getCode());
+        }
+        
     }
 }

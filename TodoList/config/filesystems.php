@@ -51,7 +51,12 @@ return [
             'url' => env('AWS_URL'),
             'endpoint' => env('AWS_ENDPOINT'),
         ],
-
+        'ftp' => [
+            'driver' => 'ftp',
+            'host' => '127.0.0.1:8000',
+            'username' => env('FTP_FILE_USER_NAME'),
+            'password' => env('FTP_FILE_USER_PASSWORD'),
+        ],
     ],
 
     /*
