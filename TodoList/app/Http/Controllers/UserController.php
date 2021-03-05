@@ -89,7 +89,7 @@ class UserController extends Controller
             return response()->json([
                 'msg' => 'Error in Registration',
                 'error' => $e,
-            ], $e->getCode());
+            ], 200);
         }
 
     }

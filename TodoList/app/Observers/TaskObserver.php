@@ -15,7 +15,7 @@ class TaskObserver
      */
     public function created(Task $task)
     {
-        Log::critical('slack test');
+        //Log::critical('slack test');
     }
 
     /**

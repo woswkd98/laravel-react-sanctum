@@ -26,6 +26,7 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::get('tasks/user', 'App\Http\Controllers\TaskController@showByUserId');
     Route::resource('tasks', 'App\Http\Controllers\TaskController');
     Route::get("logout", 'App\Http\Controllers\LoginController@logout');
+    Route::post("files",'App\Http\Controllers\FileController@update');
 });
 
 Route::post("login", 'App\Http\Controllers\LoginController@login');

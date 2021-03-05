@@ -37,7 +37,7 @@ return [
 
         'public' => [
             'driver' => 'local',
-            'root' => storage_path('app/public'),
+            'root' => storage_path('app/public'), // 여기가 파일 경로
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
         ],

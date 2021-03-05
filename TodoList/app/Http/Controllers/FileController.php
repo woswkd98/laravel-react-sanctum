@@ -13,8 +13,17 @@ class FileController extends Controller
     private function storeImg(Request $request, $name) 
     {
         $file = $request->file($name);
+        if(!$file) {
+            return 'empty file';
+        }
+
         $extention = $file->extension();
+        if(!$extention) {
+            return 'empty extention';
+        }
+
         switch ($extention) {
+            // 
             case 'png':
             case 'jpg':
                 $path = $file->store($name);
@@ -27,27 +36,31 @@ class FileController extends Controller
     public function update(Request $request) 
     {
         try {
-            $rs = $this->storeImg($request,'avatar');    
+            $rs = $this->storeImg($request,'file');    
             return response()->json($rs, 200);
         } catch (\Throwable $th) {
-            return response()->json($th->getMessage(), $th->getCode());
+            return response()->json([
+                'error msg' => $th->getMessage(),
+                'error code' => $th->getCode()
+            ], 200);
         }
     }
     public function delete(Request $request) 
     {
-
         try {
-            $request->validate([
+            $validate = $request->validate([
                 'img_name' =>'require|number'
             ]);    
-            return response()->json($rs, 200);
+            
+            return response()->json([
+                'msg' => 'success'
+            ], 200);
         } catch (\Throwable $th) {
             return response()->json($th->getMessage(), $th->getCode());
         }
-        $request->validate([
-            'img_name' =>'require|number'
-        ]);
-
     }
 
+    public function getImgs(Request $request) {
+
+    }
 }
