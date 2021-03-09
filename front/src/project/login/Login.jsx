@@ -5,7 +5,6 @@ import apiClient from '../../services/api';
 
 const Login = (props) => {
    
-    
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     

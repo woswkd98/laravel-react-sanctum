@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Hash;
-
+use Illuminate\Support\Facades\Storage;
+use App\Models\Image;
 class FileController extends Controller
 {
     private function storeImg(Request $request, $name) 
@@ -21,13 +22,21 @@ class FileController extends Controller
         if(!$extention) {
             return 'empty extention';
         }
-
+        
         switch ($extention) {
-            // 
+            // 확장자 추가 
             case 'png':
             case 'jpg':
-                $path = $file->store($name);
-                return 'success '.$path;
+                $path = Storage::putFile('/'.Auth::user()->id, $file);
+                $image = new Image;
+                $image->user_id = Auth::user()->id;
+                $image->name = $file->getClientOriginalName();
+                $image->path = $path;
+                $image->save();
+                return [
+                    'name' => $file->getClientOriginalName(),
+                    'path' => $path
+                ];
             default:
                 return 'form is not img :'.$extention;
         }
@@ -49,18 +58,23 @@ class FileController extends Controller
     {
         try {
             $validate = $request->validate([
-                'img_name' =>'require|number'
+                'img_name' =>'require|user_id'
             ]);    
             
             return response()->json([
                 'msg' => 'success'
             ], 200);
+
         } catch (\Throwable $th) {
             return response()->json($th->getMessage(), $th->getCode());
         }
     }
 
-    public function getImgs(Request $request) {
-
+    public function getImgIndex() {
+        if(Auth::user() === null) {
+            return response()->json([
+                'msg' => 'not login'
+            ], 200);
+        }
     }
 }

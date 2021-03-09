@@ -47,5 +47,8 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\Task');
     }
 
-    
+    public function images() {
+        return $this->hasMany('App\Models\Image');
+    }
+
 }
