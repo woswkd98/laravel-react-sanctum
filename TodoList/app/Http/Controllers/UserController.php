@@ -55,7 +55,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        
+
 
         try {
             $validator = Validator::make($request->all(), [
@@ -102,8 +102,6 @@ class UserController extends Controller
      */
     public function show($id)
     {
-
-
         return response($this->userRepository->findByPK($id), 200);
     }
 
@@ -145,6 +143,5 @@ class UserController extends Controller
             return response()
                 ->json('delete fali : '.$th->getMessage(),  $th->getCode());
         }
-        
     }
 }

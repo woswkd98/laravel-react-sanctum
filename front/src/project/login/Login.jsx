@@ -10,7 +10,7 @@ const Login = (props) => {
     
     const handleSubmit = (e) => {
         e.preventDefault();
-        apiClient.get('/sanctum/csrf-cookie')
+        apiClient.get('/sanctum/csrf-cookie') // 생텀 로그인 핵심 
             .then(res => {
                 console.log(res);
                 

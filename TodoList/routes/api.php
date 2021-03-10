@@ -27,6 +27,8 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::resource('tasks', 'App\Http\Controllers\TaskController');
     Route::get("logout", 'App\Http\Controllers\LoginController@logout');
     Route::post("files",'App\Http\Controllers\FileController@update');
+    Route::get("files/index",'App\Http\Controllers\FileController@getImgIndex');
+    Route::get("files/{id}",'App\Http\Controllers\FileController@getImageFromId');
 });
 
 Route::post("login", 'App\Http\Controllers\LoginController@login');

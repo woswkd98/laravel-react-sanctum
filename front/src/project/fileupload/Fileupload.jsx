@@ -21,18 +21,31 @@ const Fileupload = (props) => {
             console.log(res);
         })
       }
-    const getImage = () => { 
-      
-      
+    const getImageIdx = () => { 
+        axios.get("api/files/index").then(res => {
+          console.log(res);
+        })
     }
- 
+
+    const getImageById = () => { 
+      axios.get("api/files/1").then(res => {
+        setVisImage(res.data.imageInfos.path);
+      })
+  }
+
         return (
           <div>
             <input type="file" name="file" onChange={handleFileInput}/>
-            <button type="button" onClick={handlePost}>ㅁㄴㅇㄻ</button>
+            <button type="button" onClick={handlePost}>전송</button>
+            <button type="button" onClick={getImageIdx}>내가 가지고 있는 이미지 목록</button>
+            
           </div>
         )
+    /*
+    <button type="button" onClick={getImageById}>이미지 보여주기</button>
+            <img src={"http://127.0.0.1:8000/" + 'storage/' + visImage}  width="90px" height="50px"></img>
     
+    */
 }
 
 export default Fileupload;

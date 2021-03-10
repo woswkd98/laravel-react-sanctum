@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace App\Http\Controllers;
 
 use App\Models\User;
@@ -9,9 +9,11 @@ use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Image;
+use Illuminate\Support\Facades\DB;
+
 class FileController extends Controller
 {
-    private function storeImg(Request $request, $name) 
+    private function storeImg(Request $request, $name)
     {
         $file = $request->file($name);
         if(!$file) {
@@ -22,12 +24,13 @@ class FileController extends Controller
         if(!$extention) {
             return 'empty extention';
         }
-        
+
         switch ($extention) {
-            // 확장자 추가 
+            // 확장자 추가
             case 'png':
+            case 'jpeg':
             case 'jpg':
-                $path = Storage::putFile('/'.Auth::user()->id, $file);
+                $path = Storage::putFile('/'.Auth::user()->id, $file, 'public');
                 $image = new Image;
                 $image->user_id = Auth::user()->id;
                 $image->name = $file->getClientOriginalName();
@@ -40,12 +43,12 @@ class FileController extends Controller
             default:
                 return 'form is not img :'.$extention;
         }
-    } 
+    }
 
-    public function update(Request $request) 
+    public function update(Request $request)
     {
         try {
-            $rs = $this->storeImg($request,'file');    
+            $rs = $this->storeImg($request,'file');
             return response()->json($rs, 200);
         } catch (\Throwable $th) {
             return response()->json([
@@ -54,13 +57,13 @@ class FileController extends Controller
             ], 200);
         }
     }
-    public function delete(Request $request) 
+    public function delete(Request $request)
     {
         try {
             $validate = $request->validate([
                 'img_name' =>'require|user_id'
-            ]);    
-            
+            ]);
+
             return response()->json([
                 'msg' => 'success'
             ], 200);
@@ -76,5 +79,29 @@ class FileController extends Controller
                 'msg' => 'not login'
             ], 200);
         }
+        $datas = DB::table('images')
+            ->select()
+            ->where('user_id', Auth::user()->id)
+            ->get();
+        return response()->json([
+            'imageInfos' => $datas,
+            'id' => Auth::user()->id
+        ], 200);
+    }
+
+    public function getImageFromId($id) {
+
+        $rs = DB::table('images')
+            ->select(['path'])
+            ->where([
+                'id' => $id,
+                'user_id' => Auth::user()->id
+            ])->first();
+        //Storage::download('path', 'file');
+
+        return response()->json([
+            'imageInfos' => $rs,
+            'id' => Auth::user()->id
+        ], 200);
     }
 }
