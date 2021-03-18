@@ -30,7 +30,7 @@ class FileController extends Controller
             case 'png':
             case 'jpeg':
             case 'jpg':
-                $path = Storage::putFile('/'.Auth::user()->id, $file, 'public');
+                $path = Storage::putFile('public/'.Auth::user()->id, $file, 'public');
                 $image = new Image;
                 $image->user_id = Auth::user()->id;
                 $image->name = $file->getClientOriginalName();
@@ -85,23 +85,26 @@ class FileController extends Controller
             ->get();
         return response()->json([
             'imageInfos' => $datas,
-            'id' => Auth::user()->id
         ], 200);
     }
 
     public function getImageFromId($id) {
-
+        if(Auth::user() === null) {
+            return response()->json([
+                'msg' => 'not login'
+            ], 200);
+        }
         $rs = DB::table('images')
             ->select(['path'])
             ->where([
                 'id' => $id,
                 'user_id' => Auth::user()->id
             ])->first();
-        //Storage::download('path', 'file');
 
         return response()->json([
             'imageInfos' => $rs,
-            'id' => Auth::user()->id
         ], 200);
+    
+        
     }
 }

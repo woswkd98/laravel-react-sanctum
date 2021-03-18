@@ -12,7 +12,12 @@ use Illuminate\Support\Facades\Hash;
 class LoginController extends Controller
 {
     public function Login(Request $request) {
-        
+        if(Auth::user() !== null) {
+            return response()->json([
+                'msg' => '이미 로그인 되어있습니다'
+        ],200);
+  
+        }
         try{
             $request->validate([
                 'email' => 'required|email',
@@ -65,7 +70,10 @@ class LoginController extends Controller
         ->json([
             'msg' => 'success'
         ], 200);
-
-
     }
+
+    // passport 개인용 엑세스 토큰 not api 버전 
+    // api 버전이 있는지 몰랐습니다 
+
+    
 }

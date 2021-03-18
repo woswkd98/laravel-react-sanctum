@@ -50,5 +50,18 @@ class User extends Authenticatable
     public function images() {
         return $this->hasMany('App\Models\Image');
     }
+    
+    public function buyer()
+    {
+        return $this->hasOne('App\Models\Buyer');
+    }
+    
+    public function seller() 
+    {
+        return $this->hasOne('App\Models\Seller');
+    }
+
+
+  
 
 }

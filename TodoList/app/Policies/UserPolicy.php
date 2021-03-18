@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Auth\Access\Response;
 use Illuminate\Support\Facades\Auth;
 
 class UserPolicy
@@ -97,9 +98,7 @@ class UserPolicy
     //어드민 용으로 쓰면된다
     public function before(User $user, $ability)
     {
-        if($user->grade !== 'admin') {
-            return false;
-        }
-        return true;
+        return $user->id === "admin";
+        
     }
 }

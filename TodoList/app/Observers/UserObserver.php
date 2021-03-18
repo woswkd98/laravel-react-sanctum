@@ -15,7 +15,7 @@ class UserObserver
     public function created(User $user)
     {
         //이런식으로 유저가 생성될 때 로그를 찍을 수 있고
-        //지금 세팅에 notice, single 되있어서 로그 메모장에도 찍힘(storage/laravel.log확인)
+        //지금 세팅에 info, single 되있어서 로그 메모장에도 찍힘(storage/laravel.log확인)
         Log::info('create user ', ['userInfo' => $user->toArray()]);
     }
 
@@ -63,4 +63,5 @@ class UserObserver
     {
         //
     }
+    
 }

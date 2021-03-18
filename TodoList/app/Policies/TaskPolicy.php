@@ -6,6 +6,8 @@ use App\Models\Task;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Auth\Access\Response;
+
 class TaskPolicy
 {
     use HandlesAuthorization;
@@ -16,15 +18,10 @@ class TaskPolicy
      * @param  \App\Models\User  $user
      * @return mixed
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user, Task $task)
     {
-
-        if($user->grade === 'admin') {
-            return true;
-        }
-
-        return false;
-
+      
+        return $user->grade === "admin";
     }
 
     /**
@@ -36,11 +33,7 @@ class TaskPolicy
      */
     public function view(User $user, Task $task)
     {
-        if($user->id === $task->user_id) {
-            return true;
-        }
-
-        return false;
+        return $user->id === $task->user_id;
     }
 
     /**
@@ -63,11 +56,7 @@ class TaskPolicy
      */
     public function update(User $user, Task $task)
     {
-        if($user->id === $task->user_id) {
-            return true;
-        }
-
-        return false;
+        return $user->id === $task->user_id;
     }
 
     /**
@@ -79,11 +68,7 @@ class TaskPolicy
      */
     public function delete(User $user, Task $task)
     {
-        if($user->id === $task->user_id) {
-            return true;
-        }
-
-        return false;
+        return $user->id === $task->user_id;
     }
 
     /**
@@ -95,11 +80,7 @@ class TaskPolicy
      */
     public function restore(User $user, Task $task)
     {
-        if($user->id === $task->user_id) {
-            return true;
-        }
-
-        return false;
+        
     }
 
     /**

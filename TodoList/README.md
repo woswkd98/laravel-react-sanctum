@@ -44,8 +44,26 @@ public function created(User $user)
         Log::notice('create user ', ['userInfo' => $user->toArray()]);
 } 예를 들면 이런식으로 유저든 예약관련이든 삽입 삭제를 하면 로그가 찍힌다 
 
-지금 해결 못한것이 storeAs로 폴더이름을 유저 pk로 하는거
+
 로그에서 critcal로 설정했는데 슬랙로그가 다른레벨의 것도 찍는것
+
+// 카카오 로그인 부분 
+https://socialiteproviders.com/Kakao/ 여기서 컴포저로 카카오 설치 및 설정 잡는것 까지 다 나와있으니 그대로 따라하면 됨
+
+
+실행 순서
+kakao/login -> 동의하고 계속하기 진행 
+-> 우리가 설정해준 리다이렉트 경로로 이동 이 안에는 kakao/redirection로 해놨음
+->받으면서 author 코드랑 state 받음
+
+엑세스토큰 받는거 남음
+/*POST /oauth/token HTTP/1.1
+Host: kauth.kakao.com
+Content-type: application/x-www-form-urlencoded;charset=utf-8*/
+// post지만 겟으로 받아오면 잘받아진다 에러도 그냥 에러가 잡히는게 아니라
+//"error_description":"Bad client credentials","error_code":"KOE010" 요 에러 잡히는데 무슨 문제인지는 모르겠다
+
+토큰을 예제에는 토큰을 쿠키에 날려서 저장
 
 
 

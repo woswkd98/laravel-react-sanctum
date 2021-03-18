@@ -30,8 +30,8 @@ class TaskController extends Controller
     public function index()
     {
         return response()->json([
-            'data' => $this->taskRepository->read()
-        ]);
+            'body' => $this->taskRepository->read()
+        ], 200);
     }
 
     /**
@@ -83,7 +83,7 @@ class TaskController extends Controller
                 'error' => $e->getMessage()
             ],  $e->getCode());
         }
-        //$this->taskRepository->create($request->toArray());
+        
         return response()->json([
             'msg' => $request->toArray()
         ]);
@@ -155,7 +155,6 @@ class TaskController extends Controller
                 'error' => $e->getMessage()
             ], $e->getCode());
         }
-
     }
 
     public function showByUserId()
@@ -164,7 +163,5 @@ class TaskController extends Controller
         return response()->json([
             'body' => $datas
         ], 200);
-
-
     }
 }
