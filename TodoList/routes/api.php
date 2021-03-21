@@ -23,8 +23,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 // Auth는 생텀 사용
 Route::middleware('auth:sanctum')->group(function() {
     Route::resource('users', 'App\Http\Controllers\UserController', [ 'except'=> ['store']]);
+    Route::resource('tasks', 'App\Http\Controllers\TaskController', [ 'except'=> ['index']]);
     Route::get('tasks/user', 'App\Http\Controllers\TaskController@showByUserId');
-    Route::resource('tasks', 'App\Http\Controllers\TaskController');
+
     Route::get("logout", 'App\Http\Controllers\LoginController@logout');
     Route::post("files",'App\Http\Controllers\FileController@update');
     Route::get("files/index",'App\Http\Controllers\FileController@getImgIndex');
@@ -33,4 +34,4 @@ Route::middleware('auth:sanctum')->group(function() {
 
 Route::post("login", 'App\Http\Controllers\LoginController@login');
 Route::post("register", 'App\Http\Controllers\UserController@store');
-Route::post('logout', 'App\Http\Controllers\UserController@logout');
+Route::get('tasks', 'App\Http\Controllers\TaskController@index');

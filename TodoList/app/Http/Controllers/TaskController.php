@@ -8,6 +8,7 @@ use App\Models\Task;
 use GrahamCampbell\ResultType\Result;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class TaskController extends Controller
@@ -23,14 +24,19 @@ class TaskController extends Controller
     public function __construct(TaskRepository $taskRepository)
     {
         $this->taskRepository = $taskRepository;
-        $this->authorizeResource(Task::class, 'task');
+        $this->authorizeResource(Task::class, 'task', [
+            'except' => [
+                'index'
+            ]
+        ]);
+
 
     }
 
     public function index()
     {
         return response()->json([
-            'body' => $this->taskRepository->read()
+            'posts' => $this->taskRepository->readWithUser()
         ], 200);
     }
 
@@ -52,7 +58,7 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-
+            Log::alert('message');
         try {
             $validator = Validator::make($request->all(), [
                 'title' => 'required',
@@ -83,10 +89,7 @@ class TaskController extends Controller
                 'error' => $e->getMessage()
             ],  $e->getCode());
         }
-        
-        return response()->json([
-            'msg' => $request->toArray()
-        ]);
+
     }
 
     /**
@@ -97,6 +100,10 @@ class TaskController extends Controller
      */
     public function show($id)
     {
+
+        return response([
+            'post' => $this->taskRepository->findByPK($id)
+        ], 200);
 
     }
 
@@ -120,7 +127,7 @@ class TaskController extends Controller
      */
     public function update(Request $request, $id)
     {
-        
+
         $rs = $request->validate([
             'title' => 'required',
             'context' => 'required'
@@ -129,8 +136,8 @@ class TaskController extends Controller
         $datas = [
             'title' => $request->title,
             'context' => $request->context,
-            'user_id' => Auth::user()->id
         ];
+
 
         return $this->taskRepository->update($id, $datas);
 

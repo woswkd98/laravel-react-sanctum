@@ -14,9 +14,10 @@ class LoginController extends Controller
     public function Login(Request $request) {
         if(Auth::user() !== null) {
             return response()->json([
-                'msg' => '이미 로그인 되어있습니다'
+                'msg' => '이미 로그인 되어있습니다',
+                'result' => false
         ],200);
-  
+
         }
         try{
             $request->validate([
@@ -33,9 +34,9 @@ class LoginController extends Controller
                     'msg' => 'unauthorized'
                 ], 200);
             }
-            
+
             $user = User::where('email', $request->email)->first();
-            
+
             if(!Hash::check($request->password, $user->password,  ['round' => env('PASSWORD_HASH_ROUND')]))
             {
                 return response()->json([
@@ -44,36 +45,39 @@ class LoginController extends Controller
             }
 
             return response()->json([
-                    'msg' => 'success'
+                    'msg' => 'success',
+                    'user_email' => $user->email,
+                    'user_id' => $user->id,
+                    'result' => true,
             ],200);
-      
+
 
         } catch (Exception $e) {
             return response()->json([
                     'msg' => 'Error in login',
                     'error' => $e
                 ], 200);
-            
+
         }
-       
     }
 
     public function logout(Request $request) {
-        
+
         // Auth::logout()이 안되므로 쿠키 자체를 날려버렸다
         //Auth::logout();
         $cookie = Cookie::forget('laravel_session');
         Cookie::queue($cookie);
-        //$cookie = Cookie::forget('XSRF-TOKEN');
-        //Cookie::queue($cookie);
+        $cookie = Cookie::forget('XSRF-TOKEN');
+        Cookie::queue($cookie);
         return response()
         ->json([
             'msg' => 'success'
         ], 200);
     }
 
-    // passport 개인용 엑세스 토큰 not api 버전 
-    // api 버전이 있는지 몰랐습니다 
+    // passport 개인용 엑세스 토큰 not api 버전
+    // api 버전이 있는지 몰랐습니다
 
-    
+
+
 }

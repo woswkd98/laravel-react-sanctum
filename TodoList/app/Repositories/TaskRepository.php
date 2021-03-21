@@ -44,6 +44,15 @@ class TaskRepository implements RepositoryBase
         return DB::table('tasks')->get();
     }
 
+    public function readWithUser() {
+        return DB::table('tasks')
+            ->join('users', 'users.id', '=', 'tasks.user_id')
+            ->select([
+                'tasks.*',
+                'users.email'
+            ])->get();
+    }
+
     public function findByPK($id)
     {
         return Task::find($id)->first();

@@ -30,7 +30,7 @@ class UserRepository implements RepositoryBase
         $user = User::find($id);
 
         if(!$user) {
-            return null;
+            return 111;
         }
 
         $user->delete();

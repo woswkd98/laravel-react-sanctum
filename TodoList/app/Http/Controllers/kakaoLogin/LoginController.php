@@ -38,10 +38,6 @@ class LoginController extends Controller
         return view('login');
     }
 
-    public function Register(Request $request) {
-        $email = $request->input('email');
-        $pwd = $request->input('pwd');
-    }
 
     public function callBack() {
         return view('data');
@@ -59,7 +55,7 @@ class LoginController extends Controller
             'code' => $request->query('code'),
         ]);
 
-       
+
         // 쿠키 방법
         Cookie::queue(
             'kakaoAccessToken',
@@ -82,7 +78,4 @@ class LoginController extends Controller
             \cookie('kakaoAccessToken', null , 0)
         );
     }
-
-
-
 }

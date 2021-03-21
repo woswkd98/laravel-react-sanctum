@@ -32,8 +32,8 @@ return [
     */
 
     'lifetime' => env('SESSION_LIFETIME', 120),
-
-    'expire_on_close' => false,
+    // 생텀은 세션쿠키를 사용하므로 닫으면 없어지게 만듭니다
+    'expire_on_close' => true,
 
     /*
     |--------------------------------------------------------------------------

@@ -82,7 +82,10 @@ class UserController extends Controller
             $user = $this->userRepository->create($datas);
 
             return response()->json([
-                'msg' => 'success '.$user
+                'msg' => 'success ',
+                'user_email' => $user->email,
+                'user_id' => $user->id,
+
             ], 200);
 
          } catch(Exception $e) {

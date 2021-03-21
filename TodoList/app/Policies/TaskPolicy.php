@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Support\Facades\Log;
 
 class TaskPolicy
 {
@@ -20,8 +21,7 @@ class TaskPolicy
      */
     public function viewAny(User $user, Task $task)
     {
-      
-        return $user->grade === "admin";
+        return true;
     }
 
     /**
@@ -33,6 +33,7 @@ class TaskPolicy
      */
     public function view(User $user, Task $task)
     {
+
         return $user->id === $task->user_id;
     }
 
@@ -44,7 +45,7 @@ class TaskPolicy
      */
     public function create(User $user)
     {
-        return true;
+        return $user->id === null;
     }
 
     /**
@@ -56,6 +57,7 @@ class TaskPolicy
      */
     public function update(User $user, Task $task)
     {
+
         return $user->id === $task->user_id;
     }
 
@@ -68,7 +70,7 @@ class TaskPolicy
      */
     public function delete(User $user, Task $task)
     {
-        return $user->id === $task->user_id;
+        return Auth::user()->id === $task->user_id;
     }
 
     /**
@@ -80,7 +82,7 @@ class TaskPolicy
      */
     public function restore(User $user, Task $task)
     {
-        
+
     }
 
     /**
@@ -92,7 +94,7 @@ class TaskPolicy
      */
     public function forceDelete(User $user, Task $task)
     {
-        
+
     }
 
 
