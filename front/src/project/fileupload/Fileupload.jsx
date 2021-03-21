@@ -20,15 +20,7 @@ const Fileupload = (props) => {
             console.log(res);
         })
       }
-    const getImage = () => { 
-      axios.get("api/files/8").then(res => {
-        
-        console.log(res);
-        return;
-    })
-      
-    }
- 
+   
         return (
           <div>
             <input type="file" name="file" onChange={handleFileInput}/>

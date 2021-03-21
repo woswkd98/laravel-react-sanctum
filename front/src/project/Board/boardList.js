@@ -15,7 +15,7 @@ const BoardList = ({user_id}) => {
         console.log("11111111");
         console.log(cookies.user_id);
         appClient.get("/api/tasks").then(res => {
-            
+           
             return res.data.posts;      
         }).then((val) => {
             

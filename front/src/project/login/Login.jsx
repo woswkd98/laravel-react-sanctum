@@ -32,9 +32,9 @@ const Login = (/*{login, logout}*/) => {
     }
     const logoutHandle = () => {
         //logout();
-        axios.get('/api/logout').then(res =>{
-            removeCookies('user_id');
-            removeCookies('user_email');
+        removeCookies('user_id');
+        removeCookies('user_email');
+        axios.get('/api/logout').then(res =>{    
             alert(res.data.msg);
         });
     }

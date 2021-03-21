@@ -7,6 +7,7 @@ use App\Models\Task;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class TaskRepository implements RepositoryBase
 {
@@ -25,6 +26,14 @@ class TaskRepository implements RepositoryBase
 
     public function update($id, array $datas)
     {
+        $task = $this->findByPK($id);
+        if(Auth::user()->id !== $task->user_id) {
+            return "접근하지 못합니다";
+        }
+
+        $task->title = $datas['title'];
+        $task->context = $datas['context'];
+
         return Task::where('id', $id)->update($datas);
     }
 
@@ -32,11 +41,8 @@ class TaskRepository implements RepositoryBase
     {
         $task = Task::find($id);
 
-        if(!$task) {
-            return null;
-        }
-
         $task->delete();
+        return $id;
     }
 
     public function read()
@@ -55,7 +61,7 @@ class TaskRepository implements RepositoryBase
 
     public function findByPK($id)
     {
-        return Task::find($id)->first();
+        return Task::find($id);
     }
 
     public function findByUserKey()

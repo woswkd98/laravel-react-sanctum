@@ -23,7 +23,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 // Auth는 생텀 사용
 Route::middleware('auth:sanctum')->group(function() {
     Route::resource('users', 'App\Http\Controllers\UserController', [ 'except'=> ['store']]);
-    Route::resource('tasks', 'App\Http\Controllers\TaskController', [ 'except'=> ['index']]);
+    Route::resource('tasks', 'App\Http\Controllers\TaskController', [ 'except'=> ['index', 'show']]);
     Route::get('tasks/user', 'App\Http\Controllers\TaskController@showByUserId');
 
     Route::get("logout", 'App\Http\Controllers\LoginController@logout');
@@ -35,3 +35,4 @@ Route::middleware('auth:sanctum')->group(function() {
 Route::post("login", 'App\Http\Controllers\LoginController@login');
 Route::post("register", 'App\Http\Controllers\UserController@store');
 Route::get('tasks', 'App\Http\Controllers\TaskController@index');
+Route::get('tasks/{id}', 'App\Http\Controllers\TaskController@show');

@@ -23,7 +23,7 @@ const BoardCol= (props) => {
     
       // 나중엔 여기에 작성자도 추가할 예정      
        
-      appClient.delete('api/tasks/' + index);
+      appClient.delete('api/tasks/' + index).then(res => console.log(res));
       
         
         return <Redirect to = "/board/List"></Redirect>

@@ -56,6 +56,9 @@ Content-type: application/x-www-form-urlencoded;charset=utf-8*/
 
 토큰을 예제에는 토큰을 쿠키에 날려서 저장
 
+결국 폴리시는 api형식에 안맞는다는것을 깨달음 자꾸 이상한쪽으로 에러를띄움
+그래서 auth::user()->id로 접근함 task는 고침 user는 시간없어서 못고침 
+
 
 
 

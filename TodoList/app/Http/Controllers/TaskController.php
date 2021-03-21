@@ -24,17 +24,11 @@ class TaskController extends Controller
     public function __construct(TaskRepository $taskRepository)
     {
         $this->taskRepository = $taskRepository;
-        $this->authorizeResource(Task::class, 'task', [
-            'except' => [
-                'index'
-            ]
-        ]);
-
-
     }
 
     public function index()
     {
+
         return response()->json([
             'posts' => $this->taskRepository->readWithUser()
         ], 200);
@@ -58,8 +52,15 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-            Log::alert('message');
+
+
         try {
+            if(Auth::user() === null) {
+                return response()->json([
+                    'msg' => '로그인 안되있음'
+                ], 200);
+            }
+
             $validator = Validator::make($request->all(), [
                 'title' => 'required',
                 'context' => 'required',
@@ -68,7 +69,7 @@ class TaskController extends Controller
             if($validator->fails())
             {
                 return response()->json([
-                    'error' => $validator->errors()->all()
+                    'msg' => $validator->errors()->all()
                 ], 200);
             }
 
@@ -86,7 +87,7 @@ class TaskController extends Controller
 
         } catch(Exception $e) {
             return response()->json([
-                'error' => $e->getMessage()
+                'msg' => $e->getMessage()
             ],  $e->getCode());
         }
 
@@ -102,6 +103,7 @@ class TaskController extends Controller
     {
 
         return response([
+            'msg' => '성공',
             'post' => $this->taskRepository->findByPK($id)
         ], 200);
 
@@ -128,6 +130,7 @@ class TaskController extends Controller
     public function update(Request $request, $id)
     {
 
+
         $rs = $request->validate([
             'title' => 'required',
             'context' => 'required'
@@ -138,8 +141,10 @@ class TaskController extends Controller
             'context' => $request->context,
         ];
 
+        return response()->json([
+            'msg' => $this->taskRepository->update($id, $datas)
+        ], 200);
 
-        return $this->taskRepository->update($id, $datas);
 
 
     }
@@ -153,13 +158,19 @@ class TaskController extends Controller
     public function destroy($id)
     {
         try {
-            $this->taskRepository->delete($id);
+            $task = $this->taskRepository->findByPK($id);
+            if(Auth::user()->id !== $task->user_id) {
+                return response()->json([
+                    'msg' => '삭제할 수 없습니다'
+                ], 200);
+            }
+            $task->delete();
             return response()->json([
-                'error' => 'success'
+                'msg' => 'success'
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'error' => $e->getMessage()
+                'msg' => $e->getMessage()
             ], $e->getCode());
         }
     }

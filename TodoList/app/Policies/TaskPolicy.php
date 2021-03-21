@@ -34,7 +34,7 @@ class TaskPolicy
     public function view(User $user, Task $task)
     {
 
-        return $user->id === $task->user_id;
+        return true;
     }
 
     /**
@@ -45,7 +45,8 @@ class TaskPolicy
      */
     public function create(User $user)
     {
-        return $user->id === null;
+
+        return optional($user)->id !== null;
     }
 
     /**
@@ -57,8 +58,8 @@ class TaskPolicy
      */
     public function update(User $user, Task $task)
     {
-
-        return $user->id === $task->user_id;
+        Log::critical('messag1111111111e'. ['test' => 'awerytgaweryt']);
+        return optional($user)->id === $task->user_id;
     }
 
     /**
@@ -70,7 +71,7 @@ class TaskPolicy
      */
     public function delete(User $user, Task $task)
     {
-        return Auth::user()->id === $task->user_id;
+        return optional($user)->id === $task->user_id;
     }
 
     /**
