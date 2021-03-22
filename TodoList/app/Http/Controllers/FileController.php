@@ -49,9 +49,9 @@ class FileController extends Controller
     {
         try {
             $rs = $this->storeImg($request,'file');
-            return response()->json($rs, 200);
+            return response($rs, 200);
         } catch (\Throwable $th) {
-            return response()->json([
+            return response([
                 'error msg' => $th->getMessage(),
                 'error code' => $th->getCode()
             ], 200);
@@ -59,23 +59,12 @@ class FileController extends Controller
     }
     public function delete(Request $request)
     {
-        try {
-            $validate = $request->validate([
-                'img_name' =>'require|user_id'
-            ]);
-
-            return response()->json([
-                'msg' => 'success'
-            ], 200);
-
-        } catch (\Throwable $th) {
-            return response()->json($th->getMessage(), $th->getCode());
-        }
+       
     }
 
     public function getImgIndex() {
         if(Auth::user() === null) {
-            return response()->json([
+            return response([
                 'msg' => 'not login'
             ], 200);
         }
@@ -83,14 +72,14 @@ class FileController extends Controller
             ->select()
             ->where('user_id', Auth::user()->id)
             ->get();
-        return response()->json([
+        return response([
             'imageInfos' => $datas,
         ], 200);
     }
 
     public function getImageFromId($id) {
         if(Auth::user() === null) {
-            return response()->json([
+            return response([
                 'msg' => 'not login'
             ], 200);
         }
@@ -101,7 +90,7 @@ class FileController extends Controller
                 'user_id' => Auth::user()->id
             ])->first();
 
-        return response()->json([
+        return response([
             'imageInfos' => $rs,
         ], 200);
     

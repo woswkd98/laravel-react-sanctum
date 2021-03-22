@@ -29,7 +29,7 @@ class TaskController extends Controller
     public function index()
     {
 
-        return response()->json([
+        return response([
             'posts' => $this->taskRepository->readWithUser()
         ], 200);
     }
@@ -56,7 +56,7 @@ class TaskController extends Controller
 
         try {
             if(Auth::user() === null) {
-                return response()->json([
+                return response([
                     'msg' => '로그인 안되있음'
                 ], 200);
             }
@@ -68,7 +68,7 @@ class TaskController extends Controller
 
             if($validator->fails())
             {
-                return response()->json([
+                return response([
                     'msg' => $validator->errors()->all()
                 ], 200);
             }
@@ -81,12 +81,12 @@ class TaskController extends Controller
 
             $this->taskRepository->create($datas);
 
-            return response()->json([
+            return response([
                 'msg' => 'success'
             ], 200);
 
         } catch(Exception $e) {
-            return response()->json([
+            return response([
                 'msg' => $e->getMessage()
             ],  $e->getCode());
         }
@@ -141,7 +141,7 @@ class TaskController extends Controller
             'context' => $request->context,
         ];
 
-        return response()->json([
+        return response([
             'msg' => $this->taskRepository->update($id, $datas)
         ], 200);
 
@@ -160,16 +160,16 @@ class TaskController extends Controller
         try {
             $task = $this->taskRepository->findByPK($id);
             if(Auth::user()->id !== $task->user_id) {
-                return response()->json([
+                return response([
                     'msg' => '삭제할 수 없습니다'
                 ], 200);
             }
             $task->delete();
-            return response()->json([
+            return response([
                 'msg' => 'success'
             ], 200);
         } catch (Exception $e) {
-            return response()->json([
+            return response([
                 'msg' => $e->getMessage()
             ], $e->getCode());
         }
@@ -178,7 +178,7 @@ class TaskController extends Controller
     public function showByUserId()
     {
         $datas = $this->taskRepository->findByUserKey();
-        return response()->json([
+        return response([
             'body' => $datas
         ], 200);
     }

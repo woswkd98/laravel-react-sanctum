@@ -13,7 +13,7 @@ class LoginController extends Controller
 {
     public function Login(Request $request) {
         if(Auth::user() !== null) {
-            return response()->json([
+            return response([
                 'msg' => '이미 로그인 되어있습니다',
                 'result' => false
         ],200);
@@ -30,7 +30,7 @@ class LoginController extends Controller
 
             if(!Auth::attempt($credentials))
             {
-                return response()->json([
+                return response([
                     'msg' => 'unauthorized'
                 ], 200);
             }
@@ -39,21 +39,21 @@ class LoginController extends Controller
 
             if(!Hash::check($request->password, $user->password,  ['round' => env('PASSWORD_HASH_ROUND')]))
             {
-                return response()->json([
+                return response([
                     'password not match'
                 ], 200);
             }
-
-            return response()->json([
+       
+            return response([
                     'msg' => 'success',
-                    'user_email' => $user->email,
-                    'user_id' => $user->id,
                     'result' => true,
+                    'user_email' => $user->email,
+                    'user_id' =>$user->id
             ],200);
 
 
         } catch (Exception $e) {
-            return response()->json([
+            return response([
                     'msg' => 'Error in login',
                     'error' => $e
                 ], 200);
@@ -69,8 +69,8 @@ class LoginController extends Controller
         Cookie::queue($cookie);
         $cookie = Cookie::forget('XSRF-TOKEN');
         Cookie::queue($cookie);
-        return response()
-        ->json([
+
+        return response([
             'msg' => 'success'
         ], 200);
     }

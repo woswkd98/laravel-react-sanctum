@@ -21,7 +21,7 @@ const BoardCol= (props) => {
 
    const deleteCol = () => {
     
-      // 나중엔 여기에 작성자도 추가할 예정      
+      
        
       appClient.delete('api/tasks/' + index).then(res => console.log(res));
       

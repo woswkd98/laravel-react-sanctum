@@ -32,7 +32,7 @@ class UserController extends Controller
 
     public function index()
     {
-        return response()->json([
+        return response([
                 'body' => $this->userRepository->read()
             ], 200);
     }
@@ -66,7 +66,7 @@ class UserController extends Controller
 
             if($validator->fails())
             {
-                return response()->json([
+                return response([
                     'error' => $validator->errors()->all()
                 ], 200);
             }
@@ -81,7 +81,7 @@ class UserController extends Controller
 
             $user = $this->userRepository->create($datas);
 
-            return response()->json([
+            return response([
                 'msg' => 'success ',
                 'user_email' => $user->email,
                 'user_id' => $user->id,
@@ -89,7 +89,7 @@ class UserController extends Controller
             ], 200);
 
          } catch(Exception $e) {
-            return response()->json([
+            return response([
                 'msg' => 'Error in Registration',
                 'error' => $e,
             ], 200);
@@ -140,11 +140,9 @@ class UserController extends Controller
     public function destroy($id)
     {
         try {
-            return response()
-                ->json($this->userRepository->delete($id), 200);
+            return response($this->userRepository->delete($id), 200);
         } catch (\Throwable $th) {
-            return response()
-                ->json('delete fali : '.$th->getMessage(),  $th->getCode());
+            return response('delete fali : '.$th->getMessage(),  $th->getCode());
         }
     }
 }
